@@ -113,7 +113,7 @@ def forecast_trophy(points, x_target, b_pool):
     if displayed and min(displayed) >= 99.99:
         return LOGIT_CEIL, 0.0, [99.99, 100, 100, 100, 100]
     if displayed and max(displayed) <= 0.01:
-        return LOGIT_FLOOR, 0.0, [0.01, 0.01, 0.01, 0.01, 0.02]
+        return LOGIT_FLOOR, 0.0, [0.01, 0.01, 0.01, 0.01, 0.011]
 
     k = len(points)
     x_last = points[-1][0]
@@ -134,7 +134,7 @@ def forecast_trophy(points, x_target, b_pool):
     else:
         b = min(max(b_pool * 0.5, B_CLAMP[0]), B_CLAMP[1])
         median = y_last + b * dx
-        sigma = 1.20
+        sigma = min(SIGMA_CAP, max(0.15, 0.8 * abs(dx)))
 
     sigma = min(max(sigma, SIGMA_FLOOR), SIGMA_CAP)
     qs = []
